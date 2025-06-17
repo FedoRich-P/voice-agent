@@ -7,3 +7,5 @@ export const authFormSchema = (type: FormType) => {
         password: z.string().min(3),
     });
 };
+
+export type AuthFormSchema = z.infer<ReturnType<typeof authFormSchema>>;

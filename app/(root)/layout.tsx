@@ -1,11 +1,14 @@
 import {ReactNode} from "react";
 import Link from "next/link";
 import Image from "next/image";
+import {isAuthenticated} from "@/entities/user";
+import {redirect} from "next/navigation";
 
-export default function RootLayout({children}: Props) {
+export default async function RootLayout({children}: Props) {
 
-    // const isUserAuthenticated = await isAuthenticated();
-    // if (!isUserAuthenticated) redirect("/sign-in");
+    const isUserAuthenticated = await isAuthenticated();
+
+    if (!isUserAuthenticated) redirect("/sign-in");
 
     return <div className="root-layout">
         <nav>
