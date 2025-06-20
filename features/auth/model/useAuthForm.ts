@@ -6,9 +6,9 @@ import { toast } from "sonner";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { authFormSchema } from "@/features/auth";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "@firebase/auth";
-import { auth } from "@/firebase/client";
 import { signIn, signUp } from "@/entities/user";
 import { z } from "zod";
+import {auth} from "@/shared/firebase/client";
 
 export function useAuthForm(type: FormType) {
     const router = useRouter();

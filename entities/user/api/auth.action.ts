@@ -1,6 +1,6 @@
 "use server";
 
-import { auth, db } from "@/firebase/admin";
+import { auth, db } from "@/shared/firebase/admin";
 import { cookies } from "next/headers";
 import {handleFirebaseError} from "@/shared/lib";
 
