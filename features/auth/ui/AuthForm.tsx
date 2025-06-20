@@ -1,6 +1,6 @@
 "use client";
 
-import {Form} from "@/shared/ui";
+import {Button, Form} from "@/shared/ui";
 import {AuthFormFields, AuthFormFooter, AuthFormHeader, useAuthForm} from "@/features/auth";
 
 export function AuthForm({type}: Props) {
@@ -17,6 +17,9 @@ export function AuthForm({type}: Props) {
                         className="w-full space-y-6 mt-4 form"
                     >
                         <AuthFormFields form={form} isSignIn={isSignIn} />
+                    <Button className="btn" type="submit">
+                        {isSignIn ? "Sign In" : "Create an Account"}
+                    </Button>
                     </form>
                 </Form>
                 <AuthFormFooter isSignIn={isSignIn} />

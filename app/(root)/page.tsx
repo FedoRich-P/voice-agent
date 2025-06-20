@@ -3,17 +3,22 @@ import Image from "next/image";
 import {Button} from "@/shared/ui";
 import {dummyInterviews} from "@/shared/constants";
 import {InterviewCard} from "@/features/interview";
+import {getCurrentUser} from "@/entities/user";
+import {getInterviewsByUserId, getLatestInterviews} from "@/entities/interview";
+import {LogoutButton} from "@/features/auth";
 
 export default async function Home() {
-    // const user = await getCurrentUser();
-    //
-    // const [userInterviews, allInterview] = await Promise.all([
-    //     getInterviewsByUserId(user?.id!),
-    //     getLatestInterviews({ userId: user?.id! }),
-    // ]);
-    //
-    // const hasPastInterviews = userInterviews?.length! > 0;
-    // const hasUpcomingInterviews = allInterview?.length! > 0;
+    const user = await getCurrentUser();
+
+    if (!user) return <h2>Error...</h2>;
+
+    const [userInterviews, allInterview] = await Promise.all([
+        getInterviewsByUserId(user?.id),
+        getLatestInterviews({userId: user?.id}),
+    ]);
+
+    const hasPastInterviews = (userInterviews ?? []).length > 0;
+    const hasUpcomingInterviews = (allInterview ?? []).length > 0;
 
     return (
         <>
@@ -27,6 +32,7 @@ export default async function Home() {
                     <Button asChild className="btn-primary max-sm:w-full">
                         <Link href="/interview">Start an Interview</Link>
                     </Button>
+                    <LogoutButton />
                 </div>
 
                 <Image
@@ -55,21 +61,21 @@ export default async function Home() {
                             />
                         ))
                     }
-                    {/*{hasPastInterviews ? (*/}
-                    {/*    userInterviews?.map((interview) => (*/}
-                    {/*        <InterviewCard*/}
-                    {/*            key={interview.id}*/}
-                    {/*            userId={user?.id}*/}
-                    {/*            interviewId={interview.id}*/}
-                    {/*            role={interview.role}*/}
-                    {/*            type={interview.type}*/}
-                    {/*            techstack={interview.techstack}*/}
-                    {/*            createdAt={interview.createdAt}*/}
-                    {/*        />*/}
-                    {/*    ))*/}
-                    {/*) : (*/}
-                    {/*    <p>You haven&apos;t taken any interviews yet</p>*/}
-                    {/*)}*/}
+                    {hasPastInterviews ? (
+                        userInterviews?.map((interview) => (
+                            <InterviewCard
+                                key={interview.id}
+                                userId={user?.id}
+                                interviewId={interview.id}
+                                role={interview.role}
+                                type={interview.type}
+                                techstack={interview.techstack}
+                                createdAt={interview.createdAt}
+                            />
+                        ))
+                    ) : (
+                        <p>You haven&apos;t taken any interviews yet</p>
+                    )}
                 </div>
             </section>
 
@@ -77,21 +83,21 @@ export default async function Home() {
                 <h2>Take Interviews</h2>
 
                 <div className="interviews-section">
-                    {/*{hasUpcomingInterviews ? (*/}
-                    {/*    allInterview?.map((interview) => (*/}
-                    {/*        <InterviewCard*/}
-                    {/*            key={interview.id}*/}
-                    {/*            userId={user?.id}*/}
-                    {/*            interviewId={interview.id}*/}
-                    {/*            role={interview.role}*/}
-                    {/*            type={interview.type}*/}
-                    {/*            techstack={interview.techstack}*/}
-                    {/*            createdAt={interview.createdAt}*/}
-                    {/*        />*/}
-                    {/*    ))*/}
-                    {/*) : (*/}
-                    {/*    <p>There are no interviews available</p>*/}
-                    {/*)}*/}
+                    {hasUpcomingInterviews ? (
+                        allInterview?.map((interview) => (
+                            <InterviewCard
+                                key={interview.id}
+                                userId={user?.id}
+                                interviewId={interview.id}
+                                role={interview.role}
+                                type={interview.type}
+                                techstack={interview.techstack}
+                                createdAt={interview.createdAt}
+                            />
+                        ))
+                    ) : (
+                        <p>There are no interviews available</p>
+                    )}
                 </div>
             </section>
         </>
